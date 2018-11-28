@@ -79,8 +79,8 @@ BYTE* rotWord(BYTE *colArr) {
  *  key         키스케줄링을 수행할 16바이트 키
  *  roundKey    키스케줄링의 결과인 176바이트 라운드키가 담길 공간
  */
-void expandKey(BYTE *key, BYTE *roundKey){
-	int keyRowSize = KEY_SIZE / 4;
+void expandKey(BYTE *key, BYTE *roundKey) {
+    int keyRowSize = KEY_SIZE / 4;
     int roundKeyRowSize = ROUNDKEY_SIZE / 4;
     int rConRowSize = sizeof(r_con) / 4;
     int rConCount = 0;
@@ -119,13 +119,13 @@ void expandKey(BYTE *key, BYTE *roundKey){
  *  state   SubBytes 수행할 16바이트 state. 수행 결과는 해당 배열에 바로 반영
  *  mode    SubBytes 수행 모드
  */
- BYTE* subBytes(BYTE *state, int mode){
+BYTE* subBytes(BYTE *state, int mode) {
 	BYTE element, front, back;
 
     switch (mode) {
 
         case ENC:
-			for (int i = 0; i < STATE_SIZE; i++) {
+            for (int i = 0; i < STATE_SIZE; i++) {
                 element = state[i];
                 front = element >> 4;
                 back = element & 0x0f;
@@ -136,7 +136,7 @@ void expandKey(BYTE *key, BYTE *roundKey){
             break;
 
         case DEC:
-			for (int i = 0; i < STATE_SIZE; i++) {
+            for (int i = 0; i < STATE_SIZE; i++) {
                 element = state[i];
                 front = element >> 4;
                 back = element & 0x0f;
@@ -160,7 +160,7 @@ void expandKey(BYTE *key, BYTE *roundKey){
  *  state   ShiftRows 수행할 16바이트 state. 수행 결과는 해당 배열에 바로 반영
  *  mode    ShiftRows 수행 모드
  */
-BYTE* shiftRows(BYTE *state, int mode){
+BYTE* shiftRows(BYTE *state, int mode) {
 	int matrixRowSize = STATE_SIZE / 4;
     BYTE firstRow[matrixRowSize];
     BYTE secondRow[matrixRowSize];
@@ -215,7 +215,7 @@ BYTE* shiftRows(BYTE *state, int mode){
             break;
 
         case DEC:
-			// shift 후 temp 에 insert
+            // shift 후 temp 에 insert
             for (int i = 0; i < STATE_SIZE; i++) {
                 if (i / matrixRowSize == 0) {
                     continue;
@@ -274,8 +274,8 @@ BYTE* shiftRows(BYTE *state, int mode){
  *  state   MixColumns을 수행할 16바이트 state. 수행 결과는 해당 배열에 바로 반영
  *  mode    MixColumns의 수행 모드
  */
-BYTE* mixColumns(BYTE *state, int mode){
-	int stateRowSize = STATE_SIZE / 4;
+BYTE* mixColumns(BYTE *state, int mode) {
+    int stateRowSize = STATE_SIZE / 4;
     int mixColumArraySize = sizeof(mixColumn_array) / 4;
     BYTE tempState[STATE_SIZE];
     BYTE currentValue = 0x00;
@@ -285,7 +285,7 @@ BYTE* mixColumns(BYTE *state, int mode){
     switch (mode) {
 
         case ENC:
-			for (int k = 0; k < mixColumArraySize; k++) {
+            for (int k = 0; k < mixColumArraySize; k++) {
                 for (int i = 0; i < stateRowSize; i++) {
                     currentValue = multipleElement(mixColumn_array[k * mixColumArraySize], tempState[i]);
 
@@ -299,7 +299,7 @@ BYTE* mixColumns(BYTE *state, int mode){
             break;
 
         case DEC:
-			for (int k = 0; k < mixColumArraySize; k++) {
+            for (int k = 0; k < mixColumArraySize; k++) {
                 for (int i = 0; i < stateRowSize; i++) {
                     currentValue = multipleElement(inverse_mixColumn_array[k * mixColumArraySize], tempState[i]);
 
@@ -327,7 +327,7 @@ BYTE* mixColumns(BYTE *state, int mode){
  *  rKey    AddRoundKey를 수행할 16바이트 라운드키
  */
 BYTE* addRoundKey(BYTE *state, BYTE *rKey){
-	BYTE rKeyImpl[ROUNDKEY_SIZE];
+    BYTE rKeyImpl[ROUNDKEY_SIZE];
     memcpy(rKeyImpl, rKey, ROUNDKEY_SIZE);
 
     for (int i = 0; i < (STATE_SIZE / 4); i++) {
@@ -354,12 +354,10 @@ BYTE* addRoundKey(BYTE *state, BYTE *rKey){
  *  result  결과(평문)가 담길 바이트 배열. 호출하는 사용자가 사전에 메모리를 할당하여 파라미터로 넘어옴
  *  key     128비트 암호키 (16바이트)
  */
-void AES128(BYTE *input, BYTE *result, BYTE *key, int mode){
+void AES128(BYTE *input, BYTE *result, BYTE *key, int mode) {
 
-
-    
-    if (mode == ENC){
-		BYTE stateT[STATE_SIZE];
+    if (mode == ENC) {
+        BYTE stateT[STATE_SIZE];
         BYTE keyT[KEY_SIZE];
         BYTE roundKey[ROUNDKEY_SIZE];
         BYTE tempRound[4];
@@ -421,8 +419,8 @@ void AES128(BYTE *input, BYTE *result, BYTE *key, int mode){
         count = 0;
         memcpy(result, stateT, STATE_SIZE);
 
-    } else if (mode == DEC){
-		BYTE keyT[KEY_SIZE];
+    } else if (mode == DEC) {
+        BYTE keyT[KEY_SIZE];
         BYTE stateT[STATE_SIZE];
         BYTE roundKey[ROUNDKEY_SIZE];
         BYTE tempRound[4];
