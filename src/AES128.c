@@ -120,7 +120,7 @@ void expandKey(BYTE *key, BYTE *roundKey) {
  *  mode    SubBytes 수행 모드
  */
 BYTE* subBytes(BYTE *state, int mode) {
-	BYTE element, front, back;
+    BYTE element, front, back;
 
     switch (mode) {
 
@@ -161,7 +161,7 @@ BYTE* subBytes(BYTE *state, int mode) {
  *  mode    ShiftRows 수행 모드
  */
 BYTE* shiftRows(BYTE *state, int mode) {
-	int matrixRowSize = STATE_SIZE / 4;
+    int matrixRowSize = STATE_SIZE / 4;
     BYTE firstRow[matrixRowSize];
     BYTE secondRow[matrixRowSize];
     BYTE thirdRow[matrixRowSize];
