@@ -1,0 +1,1 @@
+gcc -o result AES128.c test_AES128.c
